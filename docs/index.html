@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Démonstration d'appel de l'API PictureSearchEngine</title>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151456567-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-151456567-1');
+</script>
+
+
+</head>
+
+<style>
+
+    .bouton {
+        border: none;
+        padding: 6px 0 6px 0;
+        border-radius: 2px;
+        box-shadow: 3px 3px 12px #999;
+        background: lightblue;
+        font: bold 16px Arial;
+        cursor: pointer;
+        color: #555;
+    }
+
+</style>
+
+<body style="text-align: center;background-color: lightgray;">
+
+<table style="width:100%;"><tr>
+    <td>
+        <h2>Client test de l'API PSE (PictureSearchEngine)</h2>
+        <br>
+        <span onclick="search()" class="bouton">&nbsp;Rechercher&nbsp;</span>
+        <br><br>
+    </td>
+    <td>
+        <br>
+        Copyrigth <a href="http://f80.fr">F80</a> - 2019<br>
+        Version 1.0<br>
+        <a href="https://www.linkedin.com/in/hhoareau/">Hervé HOAREAU</a>
+    </td>
+    <td>
+        <a id="api_ihm" target="_blank">Interface API</a>
+        <br><br>
+        <a href="https://github.com/f80dev/PictureSeachEngine">
+            <img src="github.png" style="width:100px">
+        </a>
+    </td>
+</tr></table>
+
+<div id="zone_respons" style="width:95vw;text-align: center;" ></div>
+<br><br>
+
+
+<script>
+
+    //Fonction de récupération des paramètres de l'URL
+    function getParams() {
+        var vars = {};
+        window.location.href.replace( location.hash, '' ).replace(
+            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+            function( m, key, value ) { // callback
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+        return vars;
+    }
+
+
+    /**
+     * Fonction permettant la récupération du token d'accès à l'API
+     * @param domain domaine de l'API
+     * @param username
+     * @param password
+     * @param func fonction de callback
+     */
+    function getToken(domain,username,password,func){
+        fetch(domain+"/auth?username="+username+"&password="+password)
+            .then((r)=>{
+                r.json().then((result)=>{func(result.access_token);})
+            });
+    }
+
+    //La localisation du serveur est passé en argument de la page de test
+    var server=getParams().server || "https://server.f80.fr";
+    var port=getParams().port || 5800;
+    var endpoint=getParams().endpoint || "/api";
+    var url=server+":"+port;
+    document.getElementById("api_ihm").href=url;
+    var token=null;
+    if(!url.startsWith("http"))url="http://"+url;
+    getToken(url,"demo","demo_password",(t)=> {
+        token=t;
+        console.log("Token récupéré = " + token);
+    });
+
+    var h=setTimeout(search,5000);
+
+    function search(){
+        clearTimeout(h);
+        var query=prompt("Des images de quoi (1 seul mot) ?","chatons");
+        if(query!=null && query.length>2){
+            query=query.split(" ")[0].trim();//On ne conserve que le premier mot
+
+            var zone=document.getElementById("zone_respons");
+            zone.innerHTML="<img src='wait.gif'>";
+
+            //Si la requête est bien valable, on appele l'API. Le token est passé dans le header
+            fetch(url+endpoint+"/"+query+"?limit=20&quality=true",{headers:new Headers({'access_token':token})}).then((r)=>{
+                r.json().then((result)=>{
+                    if(result==null || result.length==0){
+                        zone.innerHTML="Aucune réponse à la recherche sur "+query;
+                    } else {
+                        zone.innerHTML="";
+                        for(let r of result){
+                            zone.innerHTML+="<img style='display: inline-block;margin:5px;width:300px;height:250px;' src='"+r+"'>";
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+</script>
+</body>
+</html>

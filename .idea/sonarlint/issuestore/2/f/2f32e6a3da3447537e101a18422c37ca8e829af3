@@ -1,0 +1,5 @@
+
+qpython:S1542m"TRename function "decodeToken" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ΧΨδ¬ωÿÿÿÿ
+spython:S15422"VRename function "queryUnsplash" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(­άμΎωÿÿÿÿ
+qpython:S1542b"TRename function "createToken" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÿ¦¶΄ψÿÿÿÿ
+rpython:S1542"URename function "queryPixabay" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¤ά―ϊÿÿÿÿ

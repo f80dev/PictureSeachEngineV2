@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="192.168.1.3" id="1093ed99-4a80-45b6-90d9-1e87b07702d3" port="22" customName="FedoraLocal" nameFormat="CUSTOM" username="root">
+        <option name="customName" value="FedoraLocal" />
+      </sshConfig>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="192.168.1.3" id="9e426ba4-4bb1-42c5-ac04-4e8c3ec519cc" port="22" customName="FedoraLocal" nameFormat="CUSTOM" useOpenSSHConfig="true">
+        <option name="customName" value="FedoraLocal" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
